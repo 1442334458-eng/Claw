@@ -5,6 +5,11 @@
 TOKEN=$(cat data-pipeline/.git_token 2>/dev/null)
 URL="https://${TOKEN}@github.com/1442334458-eng/Claw.git"
 
+# 初始化报告变量
+COMMITTED_FILES=0
+REMOTE_BEHIND=0
+PUSH_STATUS="失败"
+
 # 统计本地待提交文件数
 LOCAL_UNCOMMITTED=$(git status --porcelain | wc -l)
 
