@@ -18,14 +18,22 @@ import shutil
 from datetime import datetime
 
 def _load_token():
-    """从环境变量或本地文件读取 token，绝不硬编码。"""
+    """从环境变量、或脚本同目录的 .git_token 读取 token，绝不硬编码。"""
     tok = os.environ.get("GITHUB_TOKEN", "")
     if tok:
         return tok
-    cand = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                        "..", "..", "..", "data-pipeline", ".git_token")
+    # 优先读取与本脚本同目录的 .git_token（即 skills/.git_token）
+    cand = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".git_token")
     try:
         with open(cand) as f:
+            return f.read().strip()
+    except Exception:
+        pass
+    # 兼容旧路径
+    cand2 = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                         "..", "..", "..", "data-pipeline", ".git_token")
+    try:
+        with open(cand2) as f:
             return f.read().strip()
     except Exception:
         return ""
