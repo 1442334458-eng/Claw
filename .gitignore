@@ -51,3 +51,8 @@ nul
 # ============================================
 SynoSelector.conf
 .stversions/
+
+# 足球技能已改为独立 git 仓库（真 git 同步，不走 Claw 仓库）
+.workbuddy/skills/football-betting-analysis/
+.workbuddy/skills/football-match-analysis__skillhub/
+.workbuddy/skills/football-pipeline-v8/
