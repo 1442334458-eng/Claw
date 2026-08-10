@@ -7,6 +7,8 @@
 credentials.*
 *_secret.*
 *.key
+.git_token
+.git_credentials
 
 # ============================================
 # 临时文件
