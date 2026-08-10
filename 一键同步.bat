@@ -1,6 +1,6 @@
 @echo off
 cd /d D:\1\Claw
-bash sync.sh
+C:\Users\xieyu\.workbuddy\vendor\PortableGit\bin\bash.exe sync.sh
 echo.
 echo 按任意键关闭...
 pause >nul
