@@ -1,0 +1,7 @@
+# Syncthing 元数据（不同步到 GitHub）
+.stfolder
+.stignore
+.stversions/
+.conflict-backup-*/
+.last_pull_time
+.sync-conflict-*

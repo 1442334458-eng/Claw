@@ -1,0 +1,338 @@
+{
+  "MEX": {
+    "name": "Mexico",
+    "zh": "墨西哥",
+    "group": "A",
+    "confed": "CONCACAF",
+    "elo": 1857
+  },
+  "RSA": {
+    "name": "South Africa",
+    "zh": "南非",
+    "group": "A",
+    "confed": "CAF",
+    "elo": 1500
+  },
+  "KOR": {
+    "name": "South Korea",
+    "zh": "韩国",
+    "group": "A",
+    "confed": "AFC",
+    "elo": 1784
+  },
+  "CZE": {
+    "name": "Czechia",
+    "zh": "捷克",
+    "group": "A",
+    "confed": "UEFA",
+    "elo": 1731
+  },
+  "CAN": {
+    "name": "Canada",
+    "zh": "加拿大",
+    "group": "B",
+    "confed": "CONCACAF",
+    "elo": 1805
+  },
+  "BIH": {
+    "name": "Bosnia & Herzegovina",
+    "zh": "波黑",
+    "group": "B",
+    "confed": "UEFA",
+    "elo": 1580
+  },
+  "QAT": {
+    "name": "Qatar",
+    "zh": "卡塔尔",
+    "group": "B",
+    "confed": "AFC",
+    "elo": 1550
+  },
+  "SUI": {
+    "name": "Switzerland",
+    "zh": "瑞士",
+    "group": "B",
+    "confed": "UEFA",
+    "elo": 1897
+  },
+  "BRA": {
+    "name": "Brazil",
+    "zh": "巴西",
+    "group": "C",
+    "confed": "CONMEBOL",
+    "elo": 1978
+  },
+  "MAR": {
+    "name": "Morocco",
+    "zh": "摩洛哥",
+    "group": "C",
+    "confed": "CAF",
+    "elo": 1806
+  },
+  "HAI": {
+    "name": "Haiti",
+    "zh": "海地",
+    "group": "C",
+    "confed": "CONCACAF",
+    "elo": 1550
+  },
+  "SCO": {
+    "name": "Scotland",
+    "zh": "苏格兰",
+    "group": "C",
+    "confed": "UEFA",
+    "elo": 1645
+  },
+  "USA": {
+    "name": "United States",
+    "zh": "美国",
+    "group": "D",
+    "confed": "CONCACAF",
+    "elo": 1747
+  },
+  "PAR": {
+    "name": "Paraguay",
+    "zh": "巴拉圭",
+    "group": "D",
+    "confed": "CONMEBOL",
+    "elo": 1833
+  },
+  "AUS": {
+    "name": "Australia",
+    "zh": "澳大利亚",
+    "group": "D",
+    "confed": "AFC",
+    "elo": 1774
+  },
+  "TUR": {
+    "name": "Türkiye",
+    "zh": "土耳其",
+    "group": "D",
+    "confed": "UEFA",
+    "elo": 1880
+  },
+  "GER": {
+    "name": "Germany",
+    "zh": "德国",
+    "group": "E",
+    "confed": "UEFA",
+    "elo": 1910
+  },
+  "CUW": {
+    "name": "Curaçao",
+    "zh": "库拉索",
+    "group": "E",
+    "confed": "CONCACAF",
+    "elo": 1500
+  },
+  "CIV": {
+    "name": "Côte d'Ivoire",
+    "zh": "科特迪瓦",
+    "group": "E",
+    "confed": "CAF",
+    "elo": 1650
+  },
+  "ECU": {
+    "name": "Ecuador",
+    "zh": "厄瓜多尔",
+    "group": "E",
+    "confed": "CONMEBOL",
+    "elo": 1933
+  },
+  "NED": {
+    "name": "Netherlands",
+    "zh": "荷兰",
+    "group": "F",
+    "confed": "UEFA",
+    "elo": 1959
+  },
+  "JPN": {
+    "name": "Japan",
+    "zh": "日本",
+    "group": "F",
+    "confed": "AFC",
+    "elo": 1878
+  },
+  "SWE": {
+    "name": "Sweden",
+    "zh": "瑞典",
+    "group": "F",
+    "confed": "UEFA",
+    "elo": 1660
+  },
+  "TUN": {
+    "name": "Tunisia",
+    "zh": "突尼斯",
+    "group": "F",
+    "confed": "CAF",
+    "elo": 1630
+  },
+  "BEL": {
+    "name": "Belgium",
+    "zh": "比利时",
+    "group": "G",
+    "confed": "UEFA",
+    "elo": 1850
+  },
+  "EGY": {
+    "name": "Egypt",
+    "zh": "埃及",
+    "group": "G",
+    "confed": "CAF",
+    "elo": 1659
+  },
+  "IRN": {
+    "name": "Iran",
+    "zh": "伊朗",
+    "group": "G",
+    "confed": "AFC",
+    "elo": 1755
+  },
+  "NZL": {
+    "name": "New Zealand",
+    "zh": "新西兰",
+    "group": "G",
+    "confed": "OFC",
+    "elo": 1500
+  },
+  "ESP": {
+    "name": "Spain",
+    "zh": "西班牙",
+    "group": "H",
+    "confed": "UEFA",
+    "elo": 2172
+  },
+  "CPV": {
+    "name": "Cape Verde",
+    "zh": "佛得角",
+    "group": "H",
+    "confed": "CAF",
+    "elo": 1500
+  },
+  "KSA": {
+    "name": "Saudi Arabia",
+    "zh": "沙特阿拉伯",
+    "group": "H",
+    "confed": "AFC",
+    "elo": 1635
+  },
+  "URU": {
+    "name": "Uruguay",
+    "zh": "乌拉圭",
+    "group": "H",
+    "confed": "CONMEBOL",
+    "elo": 1890
+  },
+  "FRA": {
+    "name": "France",
+    "zh": "法国",
+    "group": "I",
+    "confed": "UEFA",
+    "elo": 2062
+  },
+  "SEN": {
+    "name": "Senegal",
+    "zh": "塞内加尔",
+    "group": "I",
+    "confed": "CAF",
+    "elo": 1869
+  },
+  "IRQ": {
+    "name": "Iraq",
+    "zh": "伊拉克",
+    "group": "I",
+    "confed": "AFC",
+    "elo": 1600
+  },
+  "NOR": {
+    "name": "Norway",
+    "zh": "挪威",
+    "group": "I",
+    "confed": "UEFA",
+    "elo": 1922
+  },
+  "ARG": {
+    "name": "Argentina",
+    "zh": "阿根廷",
+    "group": "J",
+    "confed": "CONMEBOL",
+    "elo": 2113
+  },
+  "ALG": {
+    "name": "Algeria",
+    "zh": "阿尔及利亚",
+    "group": "J",
+    "confed": "CAF",
+    "elo": 1728
+  },
+  "AUT": {
+    "name": "Austria",
+    "zh": "奥地利",
+    "group": "J",
+    "confed": "UEFA",
+    "elo": 1818
+  },
+  "JOR": {
+    "name": "Jordan",
+    "zh": "约旦",
+    "group": "J",
+    "confed": "AFC",
+    "elo": 1689
+  },
+  "POR": {
+    "name": "Portugal",
+    "zh": "葡萄牙",
+    "group": "K",
+    "confed": "UEFA",
+    "elo": 1976
+  },
+  "COD": {
+    "name": "DR Congo",
+    "zh": "刚果(金)",
+    "group": "K",
+    "confed": "CAF",
+    "elo": 1550
+  },
+  "UZB": {
+    "name": "Uzbekistan",
+    "zh": "乌兹别克斯坦",
+    "group": "K",
+    "confed": "AFC",
+    "elo": 1728
+  },
+  "COL": {
+    "name": "Colombia",
+    "zh": "哥伦比亚",
+    "group": "K",
+    "confed": "CONMEBOL",
+    "elo": 1998
+  },
+  "ENG": {
+    "name": "England",
+    "zh": "英格兰",
+    "group": "L",
+    "confed": "UEFA",
+    "elo": 2042
+  },
+  "CRO": {
+    "name": "Croatia",
+    "zh": "克罗地亚",
+    "group": "L",
+    "confed": "UEFA",
+    "elo": 1932
+  },
+  "GHA": {
+    "name": "Ghana",
+    "zh": "加纳",
+    "group": "L",
+    "confed": "CAF",
+    "elo": 1620
+  },
+  "PAN": {
+    "name": "Panama",
+    "zh": "巴拿马",
+    "group": "L",
+    "confed": "CONCACAF",
+    "elo": 1733
+  }
+}
