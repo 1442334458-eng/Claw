@@ -7,6 +7,9 @@
 # API 密钥和敏感配置
 data-pipeline/.env
 *.env
+data-pipeline/.git_token
+.git_token
+.git-credentials
 
 ## 🟡 建议不同步（临时/运行产物）
 # 缓存数据（每次运行重新生成）
