@@ -1,0 +1,7 @@
+# 示例比赛列表（每行一场）
+# 格式: 主队 vs 客队
+
+Viking vs Sarpsborg 08
+Bodoe Glimt vs Valerenga
+IK Sirius vs Brommapojkarna
+Benfica vs Academico Viseu

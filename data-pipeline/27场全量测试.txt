@@ -1,0 +1,50 @@
+# 2026-08-09 27场全量测试
+# 格式: 主队 vs 客队 | 联赛 | 城市
+# 已按联赛分组，确保 sport_key 正确匹配
+
+# === 日职联 (2场) ===
+东京绿茵 vs 川崎前锋 | 日职联 | Tokyo
+长崎航海 vs 京都不死鸟 | 日职联 | Nagasaki
+
+# === 日职乙 (1场) ===
+山形山神 vs 枥木城 | 日职乙 | Yamagata
+
+# === 荷甲 (4场) ===
+鹿特丹斯巴达 vs 费耶诺德 | 荷甲 | Rotterdam
+兹沃勒 vs 阿贾克斯 | 荷甲 | Zwolle
+格罗宁根 vs 乌德勒支 | 荷甲 | Groningen
+海伦芬 vs 特温特 | 荷甲 | Heerenveen
+
+# === 德乙 (2场) ===
+圣保利 vs 菲尔特 | 德乙 | Hamburg
+纽伦堡 vs 德累斯顿 | 德乙 | Nuremberg
+
+# === 瑞典超 (8场) ===
+哈马比 vs 赫根 | 瑞典超 | Stockholm
+哈尔姆斯塔德 vs 哥德堡盖斯 | 瑞典超 | Halmstad
+IFK哥德堡 vs 卡尔马 | 瑞典超 | Gothenburg
+马尔默 vs 代格福什 | 瑞典超 | Malmo
+天狼星 vs 布洛马波卡纳 | 瑞典超 | Uppsala
+米亚尔比 vs 埃尔夫斯堡 | 瑞典超 | Hallevik
+奥尔格里特 vs 索尔纳 | 瑞典超 | Gothenburg
+瓦斯特拉斯 vs 尤尔加登 | 瑞典超 | Vasteras
+
+# === 芬超 (2场) ===
+库奥皮奥 vs TPS图尔 | 芬超 | Kuopio
+AC奥卢 vs 赫尔辛基 | 芬超 | Oulu
+
+# === 挪超 (2场) ===
+汉坎 vs 奥勒松 | 挪超 | Hamar
+克里斯蒂安松 vs 莫尔德 | 挪超 | Kristiansund
+
+# === 葡超 (4场) ===
+波尔图 vs 阿尔维卡 | 葡超 | Porto
+本菲卡 vs 维塞乌 | 葡超 | Lisbon
+吉维森特 vs 里奥阿维 | 葡超 | Barcelos
+摩雷伦斯 vs 布拉加 | 葡超 | Moreira de Conegos
+
+# === 澳超 (1场) ===
+墨尔本胜利 vs 麦克阿瑟FC | 澳超 | Melbourne
+
+# === 友谊赛 (1场) ===
+诺丁汉森林 vs 富勒姆 | 英冠 | Nottingham

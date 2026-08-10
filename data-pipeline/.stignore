@@ -1,0 +1,28 @@
+# Syncthing 忽略规则 v1.0
+# ===================================
+
+# 1. 环境变量文件（含API密钥，绝对不能同步）
+.env
+.env.local
+.env.production
+
+# 2. Syncthing临时文件（传输中断产生的垃圾）
+~syncthing~*
+
+# 3. Python缓存/虚拟环境
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# 4. 运行时数据（动态生成，不需要同步）
+cache/
+logs/
+*.log
+*.tmp
+
+# 5. 操作系统垃圾
+.DS_Store
+Thumbs.db
+desktop.ini

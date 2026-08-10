@@ -1,0 +1,30 @@
+# ============================================
+# Syncthing 同步忽略规则
+# 用于 D:\1\Claw\ 目录同步到新电脑
+# ============================================
+
+## 🔴 绝对不同步（安全/隐私）
+# API 密钥和敏感配置
+data-pipeline/.env
+*.env
+
+## 🟡 建议不同步（临时/运行产物）
+# 缓存数据（每次运行重新生成）
+data-pipeline/cache/
+data-pipeline/logs/
+
+# Python 编译缓存
+__pycache__/
+*.pyc
+*.pyo
+
+## 🟢 必须同步（核心代码）
+# 以下文件会自动同步：
+# - data-pipeline/main.py (核心引擎)
+# - data-pipeline/websearch_templates.yaml (情报模板)
+# - data-pipeline/scheduler.py (调度器)
+# - data-pipeline/run.bat / install_scheduler.bat (启动脚本)
+# - data-pipeline/新电脑一键部署.bat (懒人部署工具) 🔥🔥🔥
+# - data-pipeline/.env.example (配置模板)
+# - data-pipeline/README.md / API注册指南.md (文档)
+# - data-pipeline/matches_example.txt (示例)
