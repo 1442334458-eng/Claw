@@ -36,6 +36,7 @@
 - **错误路径**：`C:\Users\xieyu\.codebuddy\models.json`（此前误建在此，已删除）
 - 修改后需**重启 CodeBuddy Code** 才能在下拉菜单看到新模型
 - 当前已添加 `glm-5v-turbo`，但能否真正读图取决于：① Coding Plan 是否包含该模型权限；② CodeBuddy 视觉链路是否已启用
+- **双机同步**：`models.json` 在 Syncthing `wb-config` 文件夹（`C:/Users/xieyu/.workbuddy`）同步范围内，**自动同步到老二(Surface)**，无需手动复制。老二只需重启 CodeBuddy Code 即可在下拉菜单看到新模型。
 
 ## 分析报告标准化输出格式（2026-08-13 用户明确要求）
 
