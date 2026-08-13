@@ -53,6 +53,9 @@ from pathlib import Path
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, asdict, field
 
+# v2.2 多源赔率采集器 (500.com 百家欧指 + 竞彩官方 + 澳彩)
+from multi_source_odds import MultiSourceFetcher
+
 # ============================================
 # 配置区
 # ============================================
@@ -1100,6 +1103,9 @@ class DataAggregator:
         self.websearch_engine = WebSearchIntelligence()
         self.force_websearch = force_websearch
 
+        # v2.2 多源赔率采集引擎（500.com百家欧指 + 竞彩官方 + 澳彩）
+        self.multi_odds = MultiSourceFetcher(enable_websearch_fallback=True)
+
         # 联赛映射 (key统一为小写，支持多种别称)
         self.league_map = {
             # 德乙 (2. Bundesliga)
@@ -1214,6 +1220,36 @@ class DataAggregator:
             "诺丁汉森林": "Nottingham Forest", "富勒姆": "Fulham",
             # 澳超
             "墨尔本胜利": "Melbourne Victory", "麦克阿瑟FC": "Macarthur",
+            # 亚冠
+            "江原FC": "Gangwon", "江原": "Gangwon",
+            "大阪钢巴": "Gamba Osaka", "钢巴": "Gamba Osaka",
+            # 欧冠资格赛
+            "博德闪耀": "Bodo/Glimt", "圣吉联合": "St. Gilloise",
+            "萨巴赫": "Sabah", "奥胡斯": "Aarhus",
+            "奈梅亨": "NEC Nijmegen", "NEC奈梅亨": "NEC Nijmegen",
+            "奥林匹亚": "Olimpija",
+            "采列": "Celje", "亚拉腊": "Ararat-Armenia",
+            "布拉迪斯": "Slovan Bratislava", "斯洛瓦科": "Slovacko",
+            "格风暴": "Sturm Graz", "费内巴切": "Fenerbahce",
+            "里昂": "Lyon", "布斯巴达": "Sparta Prague",
+            "布拉格斯巴达": "Sparta Prague",
+            # 欧超杯
+            "巴黎圣曼": "Paris SG", "巴黎": "Paris SG",
+            "维拉": "Aston Villa",
+            # 解放者杯
+            "弗鲁米嫩": "Fluminense", "里独立": "Ind. del Valle",
+            "山谷独立": "Ind. del Valle", "里瓦达维亚独立": "Ind. del Valle",
+            "帕梅拉斯": "Palmeiras", "波特诺": "Cerro Porteno",
+            "普拉滕斯": "Platense", "科金博联": "Coquimbo",
+            # 哈萨超
+            "阿拉木图": "Kairat Almaty", "索列夫": "Zhilebao",
+            # 南美杯
+            "科林蒂安": "Corinthians", "博卡青年": "Boca Juniors",
+            "竞技": "Racing Club", "铁路工场": "Talleres",
+            "拉普大学": "Estudiantes", "阿梅体育": "America Mineiro",
+            # 欧联杯
+            "费伦茨": "Ferencvaros", "马尔默": "Malmo",
+            "中日德兰": "Midtjylland", "安德莱赫特": "Anderlecht",
         }
 
     def aggregate_match(self, home_name: str, away_name: str, league: str = "",
@@ -1282,58 +1318,110 @@ class DataAggregator:
             match.data_sources.append("WebSearch:L2-H2H")
 
         # ================================================================
-        # Layer 3: 赔率数据 (The Odds API — 这是强项！)
-        #   优先级: The Odds API (已有Key) > WebSearch
+        # Layer 3: 赔率数据 (v2.2.1 国产优先，不再依赖TheOddsAPI配额)
+        #   新优先级: 竞彩官方(free,主源) → 500.com(free,验证) → TheOddsAPI(可选,国际) → WebSearch(兜底)
         # ================================================================
         log.info("\n💰 Layer 3/6: 赔率 + 亚盘变动检测")
 
+        # === [主源] v2.2.1 多源赔率: 竞彩官方 + 500.com (免费无限量) ===
+        log.info("  → 国内源优先: 竞彩官方(sportery.cn) + 500.com百家欧指 (免费无限量)")
+        odds_filled = False
+        try:
+            # 传英文队名给 fetch_match，用于500.com等英文站点匹配
+            en_home = self.team_name_map.get(home_name, home_name)
+            en_away = self.team_name_map.get(away_name, away_name)
+            ms_match = self.multi_odds.fetch_match(home_name, away_name, league, en_home=en_home, en_away=en_away)
+            if ms_match and ms_match.sources:
+                # 区分竞彩官方程和其他源
+                sporttery_srcs = [s for s in ms_match.sources if 'sporttery' in s.source.lower()]
+                other_srcs = [s for s in ms_match.sources if 'sporttery' not in s.source.lower()]
+                log.info(f"    竞彩官方: {len(sporttery_srcs)}条, 500.com等: {len(other_srcs)}条")
+
+                # 优先用竞彩官方数据
+                all_home = [s.home_win for s in ms_match.sources if s.home_win > 0]
+                all_draw = [s.draw for s in ms_match.sources if s.draw > 0]
+                all_away = [s.away_win for s in ms_match.sources if s.away_win > 0]
+
+                if all_home:
+                    all_home.sort()
+                    all_draw.sort()
+                    all_away.sort()
+                    mid = len(all_home) // 2
+                    match.odds.home_win = all_home[mid]
+                    match.odds.draw = all_draw[mid] if all_draw else 0
+                    match.odds.away_win = all_away[mid] if all_away else 0
+                    match.data_sources.append(f"Sporttery+500com:{len(all_home)}srcs")
+                    odds_filled = True
+                    log.info(f"    ✅ 国内源赔率已填充 ({len(all_home)}家: {[s.source for s in ms_match.sources[:5]]})")
+
+                    # 提取亚盘数据
+                    handicaps = [s for s in ms_match.sources if s.handicap is not None]
+                    if handicaps:
+                        match.odds.asian_current = handicaps[0].handicap
+                        match.odds.asian_home = handicaps[0].handicap_home
+                        match.odds.asian_away = handicaps[0].handicap_away
+                        log.info(f"    🎯 亚盘: {handicaps[0].handicap}球 ({handicaps[0].source})")
+
+                    # 共识度分析
+                    consensus = ms_match.consensus
+                    if consensus:
+                        level = consensus.get('consensus_level', 'unknown')
+                        log.info(f"    共识度: {level} (CV={consensus.get('max_cv', 0):.3f})")
+                else:
+                    log.warning("    ⚠️ 国内源未获取到有效赔率")
+        except Exception as e:
+            log.warning(f"    ⚠️ 国内源赔率引擎异常: {e}")
+
+        # === [二级] The Odds API (可选, 仅用于国际赔率交叉验证) ===
         sport_key = self.league_map.get(league.lower(), {}).get('sport_key', '')
         if sport_key and self.odds_client.enabled:
-            log.info("  → 使用 The Odds API (已验证可用)")
-            matches = self.odds_client.search_matches(sport_key, days_from_now=3)
-            for m in matches:
-                # API v4: home_team/away_team 可能是 string (如 "1. FC Nürnberg") 或 dict (旧格式)
-                home = m.get('home_team', '')
-                away = m.get('away_team', '')
-                home = home.get('name', home) if isinstance(home, dict) else home
-                away = away.get('name', away) if isinstance(away, dict) else away
-                # 使用 unicode 规整后的名称进行匹配（解决 umlaut 问题）
-                # ⚠️ 先翻译中文队名为英文，否则 non-ASCII 字符会被 normalize_name 吞掉
-                translated_home = self.team_name_map.get(home_name, home_name)
-                translated_away = self.team_name_map.get(away_name, away_name)
-                home_norm = normalize_name(home)
-                away_norm = normalize_name(away)
-                our_home_norm = normalize_name(translated_home)
-                our_away_norm = normalize_name(translated_away)
-                # ⚠️ 空字符串匹配任何内容——必须防止 normalize 吞噬中文后误匹配
-                if not our_home_norm or not our_away_norm:
-                    continue
-                # 双向子串匹配：如 "nagasaki" in "varen nagasaki" 和 "kyoto" in "kyoto sanga"
-                home_match = our_home_norm in home_norm or home_norm in our_home_norm
-                away_match = our_away_norm in away_norm or away_norm in our_away_norm
-                if home_match and away_match:
-                    log.info(f"    🎯 赔率匹配: {home} vs {away}")
-                    match.odds = self.odds_client.get_odds_for_match(sport_key, m.get('id', ''))
-                    # 如果 get_odds_for_match 返回空（赛事已结束等），尝试从 m 直接获取
-                    if not match.odds.home_win:
-                        # 从搜索结果的第一个 bookmaker 获取赔率
-                        for bm in m.get('bookmakers', [])[:1]:
+            log.info("  → The Odds API (国际赔率交叉验证, 配额已优化为仅关键场次)")
+            try:
+                matches = self.odds_client.search_matches(sport_key, days_from_now=3)
+                for m in matches:
+                    home = m.get('home_team', '')
+                    away = m.get('away_team', '')
+                    home = home.get('name', home) if isinstance(home, dict) else home
+                    away = away.get('name', away) if isinstance(away, dict) else away
+                    translated_home = self.team_name_map.get(home_name, home_name)
+                    translated_away = self.team_name_map.get(away_name, away_name)
+                    home_norm = normalize_name(home)
+                    away_norm = normalize_name(away)
+                    our_home_norm = normalize_name(translated_home)
+                    our_away_norm = normalize_name(translated_away)
+                    if not our_home_norm or not our_away_norm:
+                        continue
+                    home_match = our_home_norm in home_norm or home_norm in our_home_norm
+                    away_match = our_away_norm in away_norm or away_norm in our_away_norm
+                    if home_match and away_match:
+                        log.info(f"    🎯 国际赔率匹配: {home} vs {away}")
+                        # 仅做验证，不覆盖国内源数据
+                        for bm in m.get('bookmakers', [])[:2]:  # 仅取前2家做验证
+                            bm_name = bm.get('key', '')
                             for mk in bm.get('markets', []):
                                 if mk.get('key') == 'h2h':
                                     outcomes = mk.get('outcomes', [])
                                     if len(outcomes) >= 3:
-                                        match.odds.home_win = outcomes[0].get('price', 0)
-                                        match.odds.away_win = outcomes[1].get('price', 0)
-                                        match.odds.draw = outcomes[2].get('price', 0)
-                    break
+                                        intl_home = outcomes[0].get('price', 0)
+                                        intl_draw = outcomes[2].get('price', 0)
+                                        intl_away = outcomes[1].get('price', 0)
+                                        # 如果国内源为空，用国际源填充
+                                        if not odds_filled and intl_home > 0:
+                                            match.odds.home_win = intl_home
+                                            match.odds.draw = intl_draw
+                                            match.odds.away_win = intl_away
+                                            odds_filled = True
+                                        log.info(f"      国际验证: {bm_name} {intl_home}/{intl_draw}/{intl_away}")
+                        match.data_sources.append("TheOddsAPI:verified")
+                        if match.odds.asian_change_detected:
+                            log.warning(f"  ⚠️ 亚盘异动！变化{match.odds.asian_change}球")
+                        break
+            except Exception as e:
+                log.warning(f"    The Odds API 异常: {e}")
 
-            if match.odds.home_win:
-                match.data_sources.append(f"TheOddsAPI:{','.join(match.odds.sources[:3])}")
-                if match.odds.asian_change_detected:
-                    log.warning(f"  ⚠️ 亚盘异动！变化{match.odds.asian_change}球")
-        else:
-            # 降级到 WebSearch 收集赔率
-            log.info("  → The Odds API 不可用，降级到 WebSearch 收集赔率")
+        # === [三级] WebSearch 兜底 ===
+        if not odds_filled and not match.odds.home_win:
+            log.info("  → 赔率三级兜底: WebSearch (新浪竞彩/500.com等)")
             tasks = self.websearch_engine.generate_search_tasks(home_name, away_name, league, kickoff, city)
             layer3_tasks = [t for t in tasks if t['layer'] == 3]
             layer3_results = {}
@@ -1341,7 +1429,6 @@ class DataAggregator:
                 task_num = int(task['task_id'].split('_')[0])
                 result = self.websearch_engine.execute_search_task(task)
                 layer3_results[task_num] = result
-
             match.websearch_results["layer3"] = layer3_results
             match.data_sources.append("WebSearch:L3-odds-fallback")
 

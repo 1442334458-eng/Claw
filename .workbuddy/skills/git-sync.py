@@ -12,6 +12,8 @@ import os
 import sys
 import json
 import base64
+import time
+import http.client
 import urllib.request
 import urllib.error
 import shutil
@@ -49,7 +51,7 @@ REPOS = [
     ("football-pipeline-v8", "football-pipeline-v8"),
 ]
 
-EXCLUDE_PATTERNS = ["~syncthing~", ".sync-conflict-", ".sync-conflict", ".env", ".env.local"]
+EXCLUDE_PATTERNS = ["~syncthing~", ".sync-conflict-", ".sync-conflict", ".env", ".env.local", ".git_token"]
 EXCLUDE_DIRS = {".git", "__pycache__", ".pytest_cache", "cache", "logs", ".stfolder", ".stversions"}
 
 # 额外同步任务：将独立技能文件/外部文件映射到已有仓库
@@ -67,7 +69,9 @@ def should_exclude(filename):
     return any(p in filename for p in EXCLUDE_PATTERNS)
 
 
-def api_request(method, path, data=None, raw=False):
+def api_request(method, path, data=None, raw=False, _tries=3):
+    """发起 GitHub REST API 请求，对网络抖动（IncompleteRead / ConnectionReset /
+    URLError / DNS 失败 / 5xx）自动重试，避免大文件（如 lessons.md）拉取中断即崩溃。"""
     url = f"{API_BASE}{path}"
     headers = {
         "Authorization": f"token {TOKEN}",
@@ -75,19 +79,30 @@ def api_request(method, path, data=None, raw=False):
         "Content-Type": "application/json",
     }
     body = json.dumps(data).encode("utf-8") if data else None
-    req = urllib.request.Request(url, data=body, headers=headers, method=method)
-    try:
-        with urllib.request.urlopen(req, timeout=120) as resp:
-            if raw:
-                return resp.read()
-            return json.loads(resp.read().decode("utf-8"))
-    except urllib.error.HTTPError as e:
-        error_body = e.read().decode("utf-8")
-        print(f"  API Error {e.code}: {error_body[:300]}")
-        raise
-    except urllib.error.URLError as e:
-        print(f"  Network Error: {e}")
-        raise
+    last_err = None
+    for attempt in range(1, _tries + 1):
+        req = urllib.request.Request(url, data=body, headers=headers, method=method)
+        try:
+            with urllib.request.urlopen(req, timeout=120) as resp:
+                if raw:
+                    return resp.read()
+                return json.loads(resp.read().decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            # 4xx（如 401 凭据错误）重试无意义，直接抛出
+            if e.code < 500:
+                error_body = e.read().decode("utf-8")
+                print(f"  API Error {e.code}: {error_body[:300]}")
+                raise
+            last_err = e
+            print(f"  [重试 {attempt}/{_tries}] 服务端错误 {e.code}")
+        except (urllib.error.URLError, http.client.IncompleteRead,
+                http.client.HTTPException, OSError) as e:
+            last_err = e
+            print(f"  [重试 {attempt}/{_tries}] 网络抖动: {e}")
+        if attempt < _tries:
+            time.sleep(2 * attempt)
+    print(f"  [失败] API 请求在 {_tries} 次重试后仍失败: {last_err}")
+    raise last_err
 
 
 def collect_local_files(skill_dir):
@@ -284,6 +299,10 @@ def main():
                         src = os.path.join(skill_dir, extra["repo_path"])
                         local_path = extra["local_path"]
                         dst = local_path if os.path.isabs(local_path) else os.path.join(skills_dir, local_path)
+                        # 关键：绝不用仓库里的副本覆盖正在运行的本脚本（否则本地修改会被拉取回滚）
+                        if os.path.abspath(dst) == os.path.abspath(os.path.realpath(__file__)):
+                            print(f"  [sync] 跳过自身 {extra['local_path']}（不覆盖正在运行的脚本）")
+                            continue
                         if os.path.exists(src):
                             os.makedirs(os.path.dirname(dst), exist_ok=True)
                             shutil.copy2(src, dst)
