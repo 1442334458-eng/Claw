@@ -16,12 +16,16 @@
 - 同步脚本：`D:\1\Claw\.workbuddy\skills\sync_git.bat`，桌面入口 `C:\Users\xieyu\Desktop\GitHub同步.bat`。
 - Surface 收敛基准：GitHub `main` HEAD 为 `a68662d`（betting）、`60aed2d`（match）、`e7b5ee8`（pipeline）。
 
-## Claw 主仓库与分析报告同步（2026-08-13 明确）
+## 分析报告双机同步（2026-08-13 修正，曾误判）
 
-- **分析报告（`D:\1\Claw\reports\`）随 Claw 主仓库 git 同步**，走通道 A（主仓库 `git pull`/`git push`，SSH）。这是报告的唯一事实来源。
-- **`git-sync.py` 不拉 `reports/`**：它的 `do_pull` 只同步独立技能仓库 + `EXTRA_SYNC` 映射的根目录文件，不会去拉 Claw 主仓库的 `reports/`。老二若只用 `git-sync.py pull` 会漏掉报告——这是 2026-08-13「老二 pull 啥都没有」的根因。
-- **老二一键同步入口**：`D:\1\Claw\sync_claw.bat`（commit `3ba632c` 已 push）。脚本用 `%~dp0` 自定位、自带 SSH remote 修正、`git pull` 主仓库，双击即用，不依赖硬编码路径。
-- **分工约定**：Claw 主仓库（含 reports/、球队画像、data-pipeline、配置文件）→ 主仓库 git；3 个独立技能仓库 → `git-sync.py`。两者不混用。
+- **关键事实**：老二(Surface) 的 `D:\1\Claw` 跟踪的是 **`football-betting-analysis.git`(main)**，不是 `Claw.git`。本机 `D:\1\Claw` 才是 `Claw.git`(master)。两台机 Claw 目录对应**不同远程仓库**。
+- **报告唯一事实来源在本机**：`D:\1\Claw\reports\`（Claw.git, master），但老二不拉这个仓库。
+- **让老二看到报告 = 把报告 push 到 `football-betting-analysis.git` 的 `reports/`**：
+  - 已验证可用方法：临时克隆 `football-betting-analysis.git` 到 `D:/1/Claw/.fba_tmp`（`git clone -b main --depth 1 git@github.com:1442334458-eng/football-betting-analysis.git .fba_tmp`），cp 报告进 `reports/`，commit 后 `git push origin main`，最后删除 `.fba_tmp`。
+  - 也可用 `git-sync.py`（它把本地 reports 经 GitHub API 推到该仓库，但 token 已失效 401，SSH 克隆法更稳）。
+  - 已验证：8-13 两份报告推到 `football-betting-analysis.git` main `8418628`，老二 `git pull` 即可见。
+- **老二侧操作**：直接 `git pull`（他的 remote 一直是 `football-betting-analysis.git` SSH，无需改动）。
+- **曾误判**：先前以为老二跟踪 `Claw.git`、以为 `git-sync.py` 不拉 reports 是根因、并误建了 `sync_claw.bat`（已删除）。实际根因是本机把报告推错了仓库。
 
 ## 赔率数据源决策（2026-08-12）
 
