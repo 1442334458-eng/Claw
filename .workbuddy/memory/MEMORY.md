@@ -16,6 +16,13 @@
 - 同步脚本：`D:\1\Claw\.workbuddy\skills\sync_git.bat`，桌面入口 `C:\Users\xieyu\Desktop\GitHub同步.bat`。
 - Surface 收敛基准：GitHub `main` HEAD 为 `a68662d`（betting）、`60aed2d`（match）、`e7b5ee8`（pipeline）。
 
+## Claw 主仓库与分析报告同步（2026-08-13 明确）
+
+- **分析报告（`D:\1\Claw\reports\`）随 Claw 主仓库 git 同步**，走通道 A（主仓库 `git pull`/`git push`，SSH）。这是报告的唯一事实来源。
+- **`git-sync.py` 不拉 `reports/`**：它的 `do_pull` 只同步独立技能仓库 + `EXTRA_SYNC` 映射的根目录文件，不会去拉 Claw 主仓库的 `reports/`。老二若只用 `git-sync.py pull` 会漏掉报告——这是 2026-08-13「老二 pull 啥都没有」的根因。
+- **老二一键同步入口**：`D:\1\Claw\sync_claw.bat`（commit `3ba632c` 已 push）。脚本用 `%~dp0` 自定位、自带 SSH remote 修正、`git pull` 主仓库，双击即用，不依赖硬编码路径。
+- **分工约定**：Claw 主仓库（含 reports/、球队画像、data-pipeline、配置文件）→ 主仓库 git；3 个独立技能仓库 → `git-sync.py`。两者不混用。
+
 ## 赔率数据源决策（2026-08-12）
 
 - **弃用 The Odds API**（key 已过期 401，用户明确不再续费/不使用）。pipeline 的 TheOdds 环节视为死源，跑通走 `--no-theodds` 或 WebSearch 兜底。
