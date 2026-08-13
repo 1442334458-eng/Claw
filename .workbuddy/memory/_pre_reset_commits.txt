@@ -1,0 +1,6 @@
+0b10c0e lessons: 并入 .bak 版 v7.5.2.13 (Rules 38-41 复盘经验)
+f85b5d1 chore: 移除 .mcp.json 跟踪并加入 .gitignore
+daa1f1a sync: git-sync 网络容错重构 + 报告归档至 reports/
+20f24a6 docs: v1.6.1 双机统一编号 + 球队画像 v2.3
+978e602 history: 合并 8-9至8-13 复盘记录(20场/4张票全中)
+b7dd7ea sync 周二 2026/08/11 14:07:22.44

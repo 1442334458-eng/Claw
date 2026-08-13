@@ -1,0 +1,1712 @@
+[
+  {
+    "match": {
+      "home": "流浪者",
+      "away": "比亚韦",
+      "league": "欧罗巴",
+      "kickoff": "2026-08-13T16:37:26.727125",
+      "city": ""
+    },
+    "odds": {
+      "home_win": 0,
+      "draw": 0,
+      "away_win": 0,
+      "asian_opening": "",
+      "asian_current": "",
+      "asian_change": 0,
+      "asian_change_detected": false,
+      "sources": []
+    },
+    "data_quality_tier": "🟡 A",
+    "search_tasks": [
+      {
+        "task_id": "01_injuries",
+        "search_term": "流浪者 injuries news today 2026-08-13",
+        "fallback_term": "流浪者 伤停名单 ",
+        "layer": 1,
+        "category": "injuries",
+        "priority": "critical",
+        "iron_rules": [
+          "#5 伤停精确到人",
+          "#19 核心缺阵降星"
+        ],
+        "target_fields": [
+          "missing_player_name",
+          "position (GK/DF/MF/FW)",
+          "reason (injury/suspended/red_card/tired)",
+          "expected_return"
+        ],
+        "notes": "必须区分「确认缺阵」vs「出战存疑」"
+      },
+      {
+        "task_id": "02_injuries",
+        "search_term": "比亚韦 injuries news today 2026-08-13",
+        "fallback_term": "比亚韦 伤停名单 ",
+        "layer": 1,
+        "category": "injuries",
+        "priority": "critical",
+        "iron_rules": [
+          "#5",
+          "#19"
+        ],
+        "target_fields": [
+          "missing_player_name",
+          "position",
+          "reason",
+          "expected_return"
+        ],
+        "notes": ""
+      },
+      {
+        "task_id": "03_lineup",
+        "search_term": "流浪者 predicted lineup vs 比亚韦 2026-08-13",
+        "fallback_term": "流浪者 首发 预测 ",
+        "layer": 1,
+        "category": "lineup",
+        "priority": "high",
+        "iron_rules": [
+          "#29 首发曝光-轮换识别"
+        ],
+        "target_fields": [
+          "starting_11_names",
+          "formation (4-3-3/4-2-3-1/etc)",
+          "changes_from_last_match"
+        ],
+        "notes": "T-3h内的首发消息=黄金情报（规则#29）"
+      },
+      {
+        "task_id": "04_lineup",
+        "search_term": "比亚韦 predicted lineup vs 流浪者 2026-08-13",
+        "fallback_term": "比亚韦 首发 预测 ",
+        "layer": 1,
+        "category": "lineup",
+        "priority": "high",
+        "iron_rules": [
+          "#29"
+        ],
+        "target_fields": [
+          "starting_11_names",
+          "formation",
+          "changes_from_last_match"
+        ],
+        "notes": ""
+      },
+      {
+        "task_id": "05_h2h",
+        "search_term": "流浪者 vs 比亚韦 head to head statistics",
+        "fallback_term": "流浪者 比亚韦 交锋记录 历史战绩",
+        "layer": 2,
+        "category": "h2h",
+        "priority": "critical",
+        "iron_rules": [
+          "#26 H2H逆向思维",
+          "#14 H2H一边倒"
+        ],
+        "target_fields": [
+          "last_10_matches_results (WWDDL format)",
+          "home_win_rate_pct",
+          "avg_goals_per_match",
+          "dominant_trend (home/away/balanced)"
+        ],
+        "notes": "重点看最近5场趋势，不只看总战绩"
+      },
+      {
+        "task_id": "06_h2h_odds",
+        "search_term": "流浪者 vs 比亚韦 historical odds results",
+        "fallback_term": "流浪者 比亚韦 历史赔率 走势",
+        "layer": 2,
+        "category": "h2h_odds",
+        "priority": "medium",
+        "iron_rules": [
+          "#25 赔率异动捕捉"
+        ],
+        "target_fields": [
+          "last_3_odds_movement_direction",
+          "bookmaker_adjustment_pattern",
+          "upset_frequency"
+        ],
+        "notes": "对比历史同期赔率，发现异常偏移"
+      },
+      {
+        "task_id": "07_odds_live",
+        "search_term": "流浪者 vs 比亚韦 odds today betting analysis",
+        "fallback_term": "流浪者 比亚韦 赔率 分析 今日",
+        "layer": 3,
+        "category": "odds_live",
+        "priority": "critical",
+        "iron_rules": [
+          "#25 赔率异动",
+          "#27 亚盘降盘联动",
+          "#13 DOIT三角"
+        ],
+        "target_fields": [
+          "home_win_odds (decimal)",
+          "draw_odds",
+          "away_win_odds",
+          "asian_handicap (opening/current)",
+          "total_goals_line"
+        ],
+        "notes": "至少对比3家bookmaker，单家异常≠市场信号"
+      },
+      {
+        "task_id": "08_asian_handicap",
+        "search_term": "流浪者 vs 比亚韦 asian handicap movement today",
+        "fallback_term": "流浪者 比亚韦 亚盘 变动 盘口",
+        "layer": 3,
+        "category": "asian_handicap",
+        "priority": "critical",
+        "iron_rules": [
+          "#27 亚盘降盘-信心联动"
+        ],
+        "target_fields": [
+          "opening_handicap",
+          "current_handicap",
+          "change_magnitude (balls)",
+          "bookmakers_with_change (count/total)",
+          "change_direction (up/down)"
+        ],
+        "notes": "≥0.25球变动且≥4/5家bookmaker同步 = 强信号（规则#27）"
+      },
+      {
+        "task_id": "09_pfi",
+        "search_term": "流浪者 fixture congestion fatigue August 2026",
+        "fallback_term": "流浪者 赛程 密集 疲劳 ",
+        "layer": 4,
+        "category": "pfi",
+        "priority": "high",
+        "iron_rules": [
+          "#17 PFI四项检测",
+          "#28 PFI比分区间收缩"
+        ],
+        "target_fields": [
+          "matches_in_last_7_days",
+          "matches_in_last_14_days",
+          "last_match_competition (league/ucl/uel/cup)",
+          "rest_days_since_last_match",
+          "any_midweek_fixture"
+        ],
+        "notes": "重点查7天内是否有杯赛/欧战夹击"
+      },
+      {
+        "task_id": "10_pfi",
+        "search_term": "比亚韦 fixture congestion fatigue August 2026",
+        "fallback_term": "比亚韦 赛程 密集 疲劳 ",
+        "layer": 4,
+        "category": "pfi",
+        "priority": "high",
+        "iron_rules": [
+          "#17",
+          "#28"
+        ],
+        "target_fields": [
+          "matches_in_last_7_days",
+          "last_match_competition",
+          "rest_days",
+          "travel_distance_km (if away last match)"
+        ],
+        "notes": ""
+      },
+      {
+        "task_id": "11_weather",
+        "search_term": " weather forecast 2026-08-13 match day",
+        "fallback_term": " 天气预报 ",
+        "layer": 5,
+        "category": "weather",
+        "priority": "medium",
+        "iron_rules": [
+          "#20 天气阈值"
+        ],
+        "target_fields": [
+          "temperature_celsius",
+          "precipitation_probability_pct",
+          "wind_speed_kmh",
+          "humidity_pct",
+          "weather_warning (storm/snow/extreme_heat)"
+        ],
+        "notes": "风速>40km/h或降水>70%才触发规则#20"
+      },
+      {
+        "task_id": "12_news",
+        "search_term": "流浪者 vs 比亚韦 team news motivation 2026-08-13",
+        "fallback_term": "流浪者 比亚韦 动态 新闻 ",
+        "layer": 6,
+        "category": "news",
+        "priority": "high",
+        "iron_rules": [
+          "#21 战意等级",
+          "#22 冷门诱因"
+        ],
+        "target_fields": [
+          "manager_press_conference_quotes",
+          "player_interviews (key players only)",
+          "transfer_rumors_impact",
+          "table_stakes (relegation/europe race)",
+          "morale_indicators"
+        ],
+        "notes": "教练赛前发布会内容=高价值信号"
+      },
+      {
+        "task_id": "13_lineup_leak",
+        "search_term": "流浪者 lineup leak confirmed 2026-08-13",
+        "fallback_term": "流浪者 首发曝光 确认 ",
+        "layer": 6,
+        "category": "lineup_leak",
+        "priority": "critical",
+        "iron_rules": [
+          "#29 首发曝光-轮换识别"
+        ],
+        "target_fields": [
+          "confirmed_starting_11",
+          "source_reliability (official/fan_leak/journalist)",
+          "time_before_kickoff (hours)"
+        ],
+        "notes": "赛前3小时内的曝光消息可信度最高"
+      },
+      {
+        "task_id": "14_lineup_leak",
+        "search_term": "比亚韦 lineup leak confirmed 2026-08-13",
+        "fallback_term": "比亚韦 首发曝光 确认 ",
+        "layer": 6,
+        "category": "lineup_leak",
+        "priority": "critical",
+        "iron_rules": [
+          "#29"
+        ],
+        "target_fields": [
+          "confirmed_starting_11",
+          "source_reliability",
+          "time_before_kickoff"
+        ],
+        "notes": ""
+      }
+    ],
+    "data_sources": [],
+    "exported_at": "2026-08-13T16:37:26.727131",
+    "pipeline_version": "v2.0-hybrid"
+  },
+  {
+    "match": {
+      "home": "哈茨",
+      "away": "本菲卡",
+      "league": "欧罗巴",
+      "kickoff": "2026-08-13T16:37:26.727720",
+      "city": ""
+    },
+    "odds": {
+      "home_win": 0,
+      "draw": 0,
+      "away_win": 0,
+      "asian_opening": "",
+      "asian_current": "",
+      "asian_change": 0,
+      "asian_change_detected": false,
+      "sources": []
+    },
+    "data_quality_tier": "🟡 A",
+    "search_tasks": [
+      {
+        "task_id": "01_injuries",
+        "search_term": "哈茨 injuries news today 2026-08-13",
+        "fallback_term": "哈茨 伤停名单 ",
+        "layer": 1,
+        "category": "injuries",
+        "priority": "critical",
+        "iron_rules": [
+          "#5 伤停精确到人",
+          "#19 核心缺阵降星"
+        ],
+        "target_fields": [
+          "missing_player_name",
+          "position (GK/DF/MF/FW)",
+          "reason (injury/suspended/red_card/tired)",
+          "expected_return"
+        ],
+        "notes": "必须区分「确认缺阵」vs「出战存疑」"
+      },
+      {
+        "task_id": "02_injuries",
+        "search_term": "本菲卡 injuries news today 2026-08-13",
+        "fallback_term": "本菲卡 伤停名单 ",
+        "layer": 1,
+        "category": "injuries",
+        "priority": "critical",
+        "iron_rules": [
+          "#5",
+          "#19"
+        ],
+        "target_fields": [
+          "missing_player_name",
+          "position",
+          "reason",
+          "expected_return"
+        ],
+        "notes": ""
+      },
+      {
+        "task_id": "03_lineup",
+        "search_term": "哈茨 predicted lineup vs 本菲卡 2026-08-13",
+        "fallback_term": "哈茨 首发 预测 ",
+        "layer": 1,
+        "category": "lineup",
+        "priority": "high",
+        "iron_rules": [
+          "#29 首发曝光-轮换识别"
+        ],
+        "target_fields": [
+          "starting_11_names",
+          "formation (4-3-3/4-2-3-1/etc)",
+          "changes_from_last_match"
+        ],
+        "notes": "T-3h内的首发消息=黄金情报（规则#29）"
+      },
+      {
+        "task_id": "04_lineup",
+        "search_term": "本菲卡 predicted lineup vs 哈茨 2026-08-13",
+        "fallback_term": "本菲卡 首发 预测 ",
+        "layer": 1,
+        "category": "lineup",
+        "priority": "high",
+        "iron_rules": [
+          "#29"
+        ],
+        "target_fields": [
+          "starting_11_names",
+          "formation",
+          "changes_from_last_match"
+        ],
+        "notes": ""
+      },
+      {
+        "task_id": "05_h2h",
+        "search_term": "哈茨 vs 本菲卡 head to head statistics",
+        "fallback_term": "哈茨 本菲卡 交锋记录 历史战绩",
+        "layer": 2,
+        "category": "h2h",
+        "priority": "critical",
+        "iron_rules": [
+          "#26 H2H逆向思维",
+          "#14 H2H一边倒"
+        ],
+        "target_fields": [
+          "last_10_matches_results (WWDDL format)",
+          "home_win_rate_pct",
+          "avg_goals_per_match",
+          "dominant_trend (home/away/balanced)"
+        ],
+        "notes": "重点看最近5场趋势，不只看总战绩"
+      },
+      {
+        "task_id": "06_h2h_odds",
+        "search_term": "哈茨 vs 本菲卡 historical odds results",
+        "fallback_term": "哈茨 本菲卡 历史赔率 走势",
+        "layer": 2,
+        "category": "h2h_odds",
+        "priority": "medium",
+        "iron_rules": [
+          "#25 赔率异动捕捉"
+        ],
+        "target_fields": [
+          "last_3_odds_movement_direction",
+          "bookmaker_adjustment_pattern",
+          "upset_frequency"
+        ],
+        "notes": "对比历史同期赔率，发现异常偏移"
+      },
+      {
+        "task_id": "07_odds_live",
+        "search_term": "哈茨 vs 本菲卡 odds today betting analysis",
+        "fallback_term": "哈茨 本菲卡 赔率 分析 今日",
+        "layer": 3,
+        "category": "odds_live",
+        "priority": "critical",
+        "iron_rules": [
+          "#25 赔率异动",
+          "#27 亚盘降盘联动",
+          "#13 DOIT三角"
+        ],
+        "target_fields": [
+          "home_win_odds (decimal)",
+          "draw_odds",
+          "away_win_odds",
+          "asian_handicap (opening/current)",
+          "total_goals_line"
+        ],
+        "notes": "至少对比3家bookmaker，单家异常≠市场信号"
+      },
+      {
+        "task_id": "08_asian_handicap",
+        "search_term": "哈茨 vs 本菲卡 asian handicap movement today",
+        "fallback_term": "哈茨 本菲卡 亚盘 变动 盘口",
+        "layer": 3,
+        "category": "asian_handicap",
+        "priority": "critical",
+        "iron_rules": [
+          "#27 亚盘降盘-信心联动"
+        ],
+        "target_fields": [
+          "opening_handicap",
+          "current_handicap",
+          "change_magnitude (balls)",
+          "bookmakers_with_change (count/total)",
+          "change_direction (up/down)"
+        ],
+        "notes": "≥0.25球变动且≥4/5家bookmaker同步 = 强信号（规则#27）"
+      },
+      {
+        "task_id": "09_pfi",
+        "search_term": "哈茨 fixture congestion fatigue August 2026",
+        "fallback_term": "哈茨 赛程 密集 疲劳 ",
+        "layer": 4,
+        "category": "pfi",
+        "priority": "high",
+        "iron_rules": [
+          "#17 PFI四项检测",
+          "#28 PFI比分区间收缩"
+        ],
+        "target_fields": [
+          "matches_in_last_7_days",
+          "matches_in_last_14_days",
+          "last_match_competition (league/ucl/uel/cup)",
+          "rest_days_since_last_match",
+          "any_midweek_fixture"
+        ],
+        "notes": "重点查7天内是否有杯赛/欧战夹击"
+      },
+      {
+        "task_id": "10_pfi",
+        "search_term": "本菲卡 fixture congestion fatigue August 2026",
+        "fallback_term": "本菲卡 赛程 密集 疲劳 ",
+        "layer": 4,
+        "category": "pfi",
+        "priority": "high",
+        "iron_rules": [
+          "#17",
+          "#28"
+        ],
+        "target_fields": [
+          "matches_in_last_7_days",
+          "last_match_competition",
+          "rest_days",
+          "travel_distance_km (if away last match)"
+        ],
+        "notes": ""
+      },
+      {
+        "task_id": "11_weather",
+        "search_term": " weather forecast 2026-08-13 match day",
+        "fallback_term": " 天气预报 ",
+        "layer": 5,
+        "category": "weather",
+        "priority": "medium",
+        "iron_rules": [
+          "#20 天气阈值"
+        ],
+        "target_fields": [
+          "temperature_celsius",
+          "precipitation_probability_pct",
+          "wind_speed_kmh",
+          "humidity_pct",
+          "weather_warning (storm/snow/extreme_heat)"
+        ],
+        "notes": "风速>40km/h或降水>70%才触发规则#20"
+      },
+      {
+        "task_id": "12_news",
+        "search_term": "哈茨 vs 本菲卡 team news motivation 2026-08-13",
+        "fallback_term": "哈茨 本菲卡 动态 新闻 ",
+        "layer": 6,
+        "category": "news",
+        "priority": "high",
+        "iron_rules": [
+          "#21 战意等级",
+          "#22 冷门诱因"
+        ],
+        "target_fields": [
+          "manager_press_conference_quotes",
+          "player_interviews (key players only)",
+          "transfer_rumors_impact",
+          "table_stakes (relegation/europe race)",
+          "morale_indicators"
+        ],
+        "notes": "教练赛前发布会内容=高价值信号"
+      },
+      {
+        "task_id": "13_lineup_leak",
+        "search_term": "哈茨 lineup leak confirmed 2026-08-13",
+        "fallback_term": "哈茨 首发曝光 确认 ",
+        "layer": 6,
+        "category": "lineup_leak",
+        "priority": "critical",
+        "iron_rules": [
+          "#29 首发曝光-轮换识别"
+        ],
+        "target_fields": [
+          "confirmed_starting_11",
+          "source_reliability (official/fan_leak/journalist)",
+          "time_before_kickoff (hours)"
+        ],
+        "notes": "赛前3小时内的曝光消息可信度最高"
+      },
+      {
+        "task_id": "14_lineup_leak",
+        "search_term": "本菲卡 lineup leak confirmed 2026-08-13",
+        "fallback_term": "本菲卡 首发曝光 确认 ",
+        "layer": 6,
+        "category": "lineup_leak",
+        "priority": "critical",
+        "iron_rules": [
+          "#29"
+        ],
+        "target_fields": [
+          "confirmed_starting_11",
+          "source_reliability",
+          "time_before_kickoff"
+        ],
+        "notes": ""
+      }
+    ],
+    "data_sources": [],
+    "exported_at": "2026-08-13T16:37:26.727725",
+    "pipeline_version": "v2.0-hybrid"
+  },
+  {
+    "match": {
+      "home": "安德莱",
+      "away": "塞萨洛",
+      "league": "欧罗巴",
+      "kickoff": "2026-08-13T16:37:26.728287",
+      "city": ""
+    },
+    "odds": {
+      "home_win": 0,
+      "draw": 0,
+      "away_win": 0,
+      "asian_opening": "",
+      "asian_current": "",
+      "asian_change": 0,
+      "asian_change_detected": false,
+      "sources": []
+    },
+    "data_quality_tier": "🟡 A",
+    "search_tasks": [
+      {
+        "task_id": "01_injuries",
+        "search_term": "安德莱 injuries news today 2026-08-13",
+        "fallback_term": "安德莱 伤停名单 ",
+        "layer": 1,
+        "category": "injuries",
+        "priority": "critical",
+        "iron_rules": [
+          "#5 伤停精确到人",
+          "#19 核心缺阵降星"
+        ],
+        "target_fields": [
+          "missing_player_name",
+          "position (GK/DF/MF/FW)",
+          "reason (injury/suspended/red_card/tired)",
+          "expected_return"
+        ],
+        "notes": "必须区分「确认缺阵」vs「出战存疑」"
+      },
+      {
+        "task_id": "02_injuries",
+        "search_term": "塞萨洛 injuries news today 2026-08-13",
+        "fallback_term": "塞萨洛 伤停名单 ",
+        "layer": 1,
+        "category": "injuries",
+        "priority": "critical",
+        "iron_rules": [
+          "#5",
+          "#19"
+        ],
+        "target_fields": [
+          "missing_player_name",
+          "position",
+          "reason",
+          "expected_return"
+        ],
+        "notes": ""
+      },
+      {
+        "task_id": "03_lineup",
+        "search_term": "安德莱 predicted lineup vs 塞萨洛 2026-08-13",
+        "fallback_term": "安德莱 首发 预测 ",
+        "layer": 1,
+        "category": "lineup",
+        "priority": "high",
+        "iron_rules": [
+          "#29 首发曝光-轮换识别"
+        ],
+        "target_fields": [
+          "starting_11_names",
+          "formation (4-3-3/4-2-3-1/etc)",
+          "changes_from_last_match"
+        ],
+        "notes": "T-3h内的首发消息=黄金情报（规则#29）"
+      },
+      {
+        "task_id": "04_lineup",
+        "search_term": "塞萨洛 predicted lineup vs 安德莱 2026-08-13",
+        "fallback_term": "塞萨洛 首发 预测 ",
+        "layer": 1,
+        "category": "lineup",
+        "priority": "high",
+        "iron_rules": [
+          "#29"
+        ],
+        "target_fields": [
+          "starting_11_names",
+          "formation",
+          "changes_from_last_match"
+        ],
+        "notes": ""
+      },
+      {
+        "task_id": "05_h2h",
+        "search_term": "安德莱 vs 塞萨洛 head to head statistics",
+        "fallback_term": "安德莱 塞萨洛 交锋记录 历史战绩",
+        "layer": 2,
+        "category": "h2h",
+        "priority": "critical",
+        "iron_rules": [
+          "#26 H2H逆向思维",
+          "#14 H2H一边倒"
+        ],
+        "target_fields": [
+          "last_10_matches_results (WWDDL format)",
+          "home_win_rate_pct",
+          "avg_goals_per_match",
+          "dominant_trend (home/away/balanced)"
+        ],
+        "notes": "重点看最近5场趋势，不只看总战绩"
+      },
+      {
+        "task_id": "06_h2h_odds",
+        "search_term": "安德莱 vs 塞萨洛 historical odds results",
+        "fallback_term": "安德莱 塞萨洛 历史赔率 走势",
+        "layer": 2,
+        "category": "h2h_odds",
+        "priority": "medium",
+        "iron_rules": [
+          "#25 赔率异动捕捉"
+        ],
+        "target_fields": [
+          "last_3_odds_movement_direction",
+          "bookmaker_adjustment_pattern",
+          "upset_frequency"
+        ],
+        "notes": "对比历史同期赔率，发现异常偏移"
+      },
+      {
+        "task_id": "07_odds_live",
+        "search_term": "安德莱 vs 塞萨洛 odds today betting analysis",
+        "fallback_term": "安德莱 塞萨洛 赔率 分析 今日",
+        "layer": 3,
+        "category": "odds_live",
+        "priority": "critical",
+        "iron_rules": [
+          "#25 赔率异动",
+          "#27 亚盘降盘联动",
+          "#13 DOIT三角"
+        ],
+        "target_fields": [
+          "home_win_odds (decimal)",
+          "draw_odds",
+          "away_win_odds",
+          "asian_handicap (opening/current)",
+          "total_goals_line"
+        ],
+        "notes": "至少对比3家bookmaker，单家异常≠市场信号"
+      },
+      {
+        "task_id": "08_asian_handicap",
+        "search_term": "安德莱 vs 塞萨洛 asian handicap movement today",
+        "fallback_term": "安德莱 塞萨洛 亚盘 变动 盘口",
+        "layer": 3,
+        "category": "asian_handicap",
+        "priority": "critical",
+        "iron_rules": [
+          "#27 亚盘降盘-信心联动"
+        ],
+        "target_fields": [
+          "opening_handicap",
+          "current_handicap",
+          "change_magnitude (balls)",
+          "bookmakers_with_change (count/total)",
+          "change_direction (up/down)"
+        ],
+        "notes": "≥0.25球变动且≥4/5家bookmaker同步 = 强信号（规则#27）"
+      },
+      {
+        "task_id": "09_pfi",
+        "search_term": "安德莱 fixture congestion fatigue August 2026",
+        "fallback_term": "安德莱 赛程 密集 疲劳 ",
+        "layer": 4,
+        "category": "pfi",
+        "priority": "high",
+        "iron_rules": [
+          "#17 PFI四项检测",
+          "#28 PFI比分区间收缩"
+        ],
+        "target_fields": [
+          "matches_in_last_7_days",
+          "matches_in_last_14_days",
+          "last_match_competition (league/ucl/uel/cup)",
+          "rest_days_since_last_match",
+          "any_midweek_fixture"
+        ],
+        "notes": "重点查7天内是否有杯赛/欧战夹击"
+      },
+      {
+        "task_id": "10_pfi",
+        "search_term": "塞萨洛 fixture congestion fatigue August 2026",
+        "fallback_term": "塞萨洛 赛程 密集 疲劳 ",
+        "layer": 4,
+        "category": "pfi",
+        "priority": "high",
+        "iron_rules": [
+          "#17",
+          "#28"
+        ],
+        "target_fields": [
+          "matches_in_last_7_days",
+          "last_match_competition",
+          "rest_days",
+          "travel_distance_km (if away last match)"
+        ],
+        "notes": ""
+      },
+      {
+        "task_id": "11_weather",
+        "search_term": " weather forecast 2026-08-13 match day",
+        "fallback_term": " 天气预报 ",
+        "layer": 5,
+        "category": "weather",
+        "priority": "medium",
+        "iron_rules": [
+          "#20 天气阈值"
+        ],
+        "target_fields": [
+          "temperature_celsius",
+          "precipitation_probability_pct",
+          "wind_speed_kmh",
+          "humidity_pct",
+          "weather_warning (storm/snow/extreme_heat)"
+        ],
+        "notes": "风速>40km/h或降水>70%才触发规则#20"
+      },
+      {
+        "task_id": "12_news",
+        "search_term": "安德莱 vs 塞萨洛 team news motivation 2026-08-13",
+        "fallback_term": "安德莱 塞萨洛 动态 新闻 ",
+        "layer": 6,
+        "category": "news",
+        "priority": "high",
+        "iron_rules": [
+          "#21 战意等级",
+          "#22 冷门诱因"
+        ],
+        "target_fields": [
+          "manager_press_conference_quotes",
+          "player_interviews (key players only)",
+          "transfer_rumors_impact",
+          "table_stakes (relegation/europe race)",
+          "morale_indicators"
+        ],
+        "notes": "教练赛前发布会内容=高价值信号"
+      },
+      {
+        "task_id": "13_lineup_leak",
+        "search_term": "安德莱 lineup leak confirmed 2026-08-13",
+        "fallback_term": "安德莱 首发曝光 确认 ",
+        "layer": 6,
+        "category": "lineup_leak",
+        "priority": "critical",
+        "iron_rules": [
+          "#29 首发曝光-轮换识别"
+        ],
+        "target_fields": [
+          "confirmed_starting_11",
+          "source_reliability (official/fan_leak/journalist)",
+          "time_before_kickoff (hours)"
+        ],
+        "notes": "赛前3小时内的曝光消息可信度最高"
+      },
+      {
+        "task_id": "14_lineup_leak",
+        "search_term": "塞萨洛 lineup leak confirmed 2026-08-13",
+        "fallback_term": "塞萨洛 首发曝光 确认 ",
+        "layer": 6,
+        "category": "lineup_leak",
+        "priority": "critical",
+        "iron_rules": [
+          "#29"
+        ],
+        "target_fields": [
+          "confirmed_starting_11",
+          "source_reliability",
+          "time_before_kickoff"
+        ],
+        "notes": ""
+      }
+    ],
+    "data_sources": [],
+    "exported_at": "2026-08-13T16:37:26.728291",
+    "pipeline_version": "v2.0-hybrid"
+  },
+  {
+    "match": {
+      "home": "帕福斯",
+      "away": "萨尔茨堡",
+      "league": "欧罗巴",
+      "kickoff": "2026-08-13T16:37:26.728874",
+      "city": ""
+    },
+    "odds": {
+      "home_win": 0,
+      "draw": 0,
+      "away_win": 0,
+      "asian_opening": "",
+      "asian_current": "",
+      "asian_change": 0,
+      "asian_change_detected": false,
+      "sources": []
+    },
+    "data_quality_tier": "🟡 A",
+    "search_tasks": [
+      {
+        "task_id": "01_injuries",
+        "search_term": "帕福斯 injuries news today 2026-08-13",
+        "fallback_term": "帕福斯 伤停名单 ",
+        "layer": 1,
+        "category": "injuries",
+        "priority": "critical",
+        "iron_rules": [
+          "#5 伤停精确到人",
+          "#19 核心缺阵降星"
+        ],
+        "target_fields": [
+          "missing_player_name",
+          "position (GK/DF/MF/FW)",
+          "reason (injury/suspended/red_card/tired)",
+          "expected_return"
+        ],
+        "notes": "必须区分「确认缺阵」vs「出战存疑」"
+      },
+      {
+        "task_id": "02_injuries",
+        "search_term": "萨尔茨堡 injuries news today 2026-08-13",
+        "fallback_term": "萨尔茨堡 伤停名单 ",
+        "layer": 1,
+        "category": "injuries",
+        "priority": "critical",
+        "iron_rules": [
+          "#5",
+          "#19"
+        ],
+        "target_fields": [
+          "missing_player_name",
+          "position",
+          "reason",
+          "expected_return"
+        ],
+        "notes": ""
+      },
+      {
+        "task_id": "03_lineup",
+        "search_term": "帕福斯 predicted lineup vs 萨尔茨堡 2026-08-13",
+        "fallback_term": "帕福斯 首发 预测 ",
+        "layer": 1,
+        "category": "lineup",
+        "priority": "high",
+        "iron_rules": [
+          "#29 首发曝光-轮换识别"
+        ],
+        "target_fields": [
+          "starting_11_names",
+          "formation (4-3-3/4-2-3-1/etc)",
+          "changes_from_last_match"
+        ],
+        "notes": "T-3h内的首发消息=黄金情报（规则#29）"
+      },
+      {
+        "task_id": "04_lineup",
+        "search_term": "萨尔茨堡 predicted lineup vs 帕福斯 2026-08-13",
+        "fallback_term": "萨尔茨堡 首发 预测 ",
+        "layer": 1,
+        "category": "lineup",
+        "priority": "high",
+        "iron_rules": [
+          "#29"
+        ],
+        "target_fields": [
+          "starting_11_names",
+          "formation",
+          "changes_from_last_match"
+        ],
+        "notes": ""
+      },
+      {
+        "task_id": "05_h2h",
+        "search_term": "帕福斯 vs 萨尔茨堡 head to head statistics",
+        "fallback_term": "帕福斯 萨尔茨堡 交锋记录 历史战绩",
+        "layer": 2,
+        "category": "h2h",
+        "priority": "critical",
+        "iron_rules": [
+          "#26 H2H逆向思维",
+          "#14 H2H一边倒"
+        ],
+        "target_fields": [
+          "last_10_matches_results (WWDDL format)",
+          "home_win_rate_pct",
+          "avg_goals_per_match",
+          "dominant_trend (home/away/balanced)"
+        ],
+        "notes": "重点看最近5场趋势，不只看总战绩"
+      },
+      {
+        "task_id": "06_h2h_odds",
+        "search_term": "帕福斯 vs 萨尔茨堡 historical odds results",
+        "fallback_term": "帕福斯 萨尔茨堡 历史赔率 走势",
+        "layer": 2,
+        "category": "h2h_odds",
+        "priority": "medium",
+        "iron_rules": [
+          "#25 赔率异动捕捉"
+        ],
+        "target_fields": [
+          "last_3_odds_movement_direction",
+          "bookmaker_adjustment_pattern",
+          "upset_frequency"
+        ],
+        "notes": "对比历史同期赔率，发现异常偏移"
+      },
+      {
+        "task_id": "07_odds_live",
+        "search_term": "帕福斯 vs 萨尔茨堡 odds today betting analysis",
+        "fallback_term": "帕福斯 萨尔茨堡 赔率 分析 今日",
+        "layer": 3,
+        "category": "odds_live",
+        "priority": "critical",
+        "iron_rules": [
+          "#25 赔率异动",
+          "#27 亚盘降盘联动",
+          "#13 DOIT三角"
+        ],
+        "target_fields": [
+          "home_win_odds (decimal)",
+          "draw_odds",
+          "away_win_odds",
+          "asian_handicap (opening/current)",
+          "total_goals_line"
+        ],
+        "notes": "至少对比3家bookmaker，单家异常≠市场信号"
+      },
+      {
+        "task_id": "08_asian_handicap",
+        "search_term": "帕福斯 vs 萨尔茨堡 asian handicap movement today",
+        "fallback_term": "帕福斯 萨尔茨堡 亚盘 变动 盘口",
+        "layer": 3,
+        "category": "asian_handicap",
+        "priority": "critical",
+        "iron_rules": [
+          "#27 亚盘降盘-信心联动"
+        ],
+        "target_fields": [
+          "opening_handicap",
+          "current_handicap",
+          "change_magnitude (balls)",
+          "bookmakers_with_change (count/total)",
+          "change_direction (up/down)"
+        ],
+        "notes": "≥0.25球变动且≥4/5家bookmaker同步 = 强信号（规则#27）"
+      },
+      {
+        "task_id": "09_pfi",
+        "search_term": "帕福斯 fixture congestion fatigue August 2026",
+        "fallback_term": "帕福斯 赛程 密集 疲劳 ",
+        "layer": 4,
+        "category": "pfi",
+        "priority": "high",
+        "iron_rules": [
+          "#17 PFI四项检测",
+          "#28 PFI比分区间收缩"
+        ],
+        "target_fields": [
+          "matches_in_last_7_days",
+          "matches_in_last_14_days",
+          "last_match_competition (league/ucl/uel/cup)",
+          "rest_days_since_last_match",
+          "any_midweek_fixture"
+        ],
+        "notes": "重点查7天内是否有杯赛/欧战夹击"
+      },
+      {
+        "task_id": "10_pfi",
+        "search_term": "萨尔茨堡 fixture congestion fatigue August 2026",
+        "fallback_term": "萨尔茨堡 赛程 密集 疲劳 ",
+        "layer": 4,
+        "category": "pfi",
+        "priority": "high",
+        "iron_rules": [
+          "#17",
+          "#28"
+        ],
+        "target_fields": [
+          "matches_in_last_7_days",
+          "last_match_competition",
+          "rest_days",
+          "travel_distance_km (if away last match)"
+        ],
+        "notes": ""
+      },
+      {
+        "task_id": "11_weather",
+        "search_term": " weather forecast 2026-08-13 match day",
+        "fallback_term": " 天气预报 ",
+        "layer": 5,
+        "category": "weather",
+        "priority": "medium",
+        "iron_rules": [
+          "#20 天气阈值"
+        ],
+        "target_fields": [
+          "temperature_celsius",
+          "precipitation_probability_pct",
+          "wind_speed_kmh",
+          "humidity_pct",
+          "weather_warning (storm/snow/extreme_heat)"
+        ],
+        "notes": "风速>40km/h或降水>70%才触发规则#20"
+      },
+      {
+        "task_id": "12_news",
+        "search_term": "帕福斯 vs 萨尔茨堡 team news motivation 2026-08-13",
+        "fallback_term": "帕福斯 萨尔茨堡 动态 新闻 ",
+        "layer": 6,
+        "category": "news",
+        "priority": "high",
+        "iron_rules": [
+          "#21 战意等级",
+          "#22 冷门诱因"
+        ],
+        "target_fields": [
+          "manager_press_conference_quotes",
+          "player_interviews (key players only)",
+          "transfer_rumors_impact",
+          "table_stakes (relegation/europe race)",
+          "morale_indicators"
+        ],
+        "notes": "教练赛前发布会内容=高价值信号"
+      },
+      {
+        "task_id": "13_lineup_leak",
+        "search_term": "帕福斯 lineup leak confirmed 2026-08-13",
+        "fallback_term": "帕福斯 首发曝光 确认 ",
+        "layer": 6,
+        "category": "lineup_leak",
+        "priority": "critical",
+        "iron_rules": [
+          "#29 首发曝光-轮换识别"
+        ],
+        "target_fields": [
+          "confirmed_starting_11",
+          "source_reliability (official/fan_leak/journalist)",
+          "time_before_kickoff (hours)"
+        ],
+        "notes": "赛前3小时内的曝光消息可信度最高"
+      },
+      {
+        "task_id": "14_lineup_leak",
+        "search_term": "萨尔茨堡 lineup leak confirmed 2026-08-13",
+        "fallback_term": "萨尔茨堡 首发曝光 确认 ",
+        "layer": 6,
+        "category": "lineup_leak",
+        "priority": "critical",
+        "iron_rules": [
+          "#29"
+        ],
+        "target_fields": [
+          "confirmed_starting_11",
+          "source_reliability",
+          "time_before_kickoff"
+        ],
+        "notes": ""
+      }
+    ],
+    "data_sources": [],
+    "exported_at": "2026-08-13T16:37:26.728878",
+    "pipeline_version": "v2.0-hybrid"
+  },
+  {
+    "match": {
+      "home": "雷克维京",
+      "away": "图恩",
+      "league": "欧罗巴",
+      "kickoff": "2026-08-13T16:37:26.729391",
+      "city": ""
+    },
+    "odds": {
+      "home_win": 0,
+      "draw": 0,
+      "away_win": 0,
+      "asian_opening": "",
+      "asian_current": "",
+      "asian_change": 0,
+      "asian_change_detected": false,
+      "sources": []
+    },
+    "data_quality_tier": "🟡 A",
+    "search_tasks": [
+      {
+        "task_id": "01_injuries",
+        "search_term": "雷克维京 injuries news today 2026-08-13",
+        "fallback_term": "雷克维京 伤停名单 ",
+        "layer": 1,
+        "category": "injuries",
+        "priority": "critical",
+        "iron_rules": [
+          "#5 伤停精确到人",
+          "#19 核心缺阵降星"
+        ],
+        "target_fields": [
+          "missing_player_name",
+          "position (GK/DF/MF/FW)",
+          "reason (injury/suspended/red_card/tired)",
+          "expected_return"
+        ],
+        "notes": "必须区分「确认缺阵」vs「出战存疑」"
+      },
+      {
+        "task_id": "02_injuries",
+        "search_term": "图恩 injuries news today 2026-08-13",
+        "fallback_term": "图恩 伤停名单 ",
+        "layer": 1,
+        "category": "injuries",
+        "priority": "critical",
+        "iron_rules": [
+          "#5",
+          "#19"
+        ],
+        "target_fields": [
+          "missing_player_name",
+          "position",
+          "reason",
+          "expected_return"
+        ],
+        "notes": ""
+      },
+      {
+        "task_id": "03_lineup",
+        "search_term": "雷克维京 predicted lineup vs 图恩 2026-08-13",
+        "fallback_term": "雷克维京 首发 预测 ",
+        "layer": 1,
+        "category": "lineup",
+        "priority": "high",
+        "iron_rules": [
+          "#29 首发曝光-轮换识别"
+        ],
+        "target_fields": [
+          "starting_11_names",
+          "formation (4-3-3/4-2-3-1/etc)",
+          "changes_from_last_match"
+        ],
+        "notes": "T-3h内的首发消息=黄金情报（规则#29）"
+      },
+      {
+        "task_id": "04_lineup",
+        "search_term": "图恩 predicted lineup vs 雷克维京 2026-08-13",
+        "fallback_term": "图恩 首发 预测 ",
+        "layer": 1,
+        "category": "lineup",
+        "priority": "high",
+        "iron_rules": [
+          "#29"
+        ],
+        "target_fields": [
+          "starting_11_names",
+          "formation",
+          "changes_from_last_match"
+        ],
+        "notes": ""
+      },
+      {
+        "task_id": "05_h2h",
+        "search_term": "雷克维京 vs 图恩 head to head statistics",
+        "fallback_term": "雷克维京 图恩 交锋记录 历史战绩",
+        "layer": 2,
+        "category": "h2h",
+        "priority": "critical",
+        "iron_rules": [
+          "#26 H2H逆向思维",
+          "#14 H2H一边倒"
+        ],
+        "target_fields": [
+          "last_10_matches_results (WWDDL format)",
+          "home_win_rate_pct",
+          "avg_goals_per_match",
+          "dominant_trend (home/away/balanced)"
+        ],
+        "notes": "重点看最近5场趋势，不只看总战绩"
+      },
+      {
+        "task_id": "06_h2h_odds",
+        "search_term": "雷克维京 vs 图恩 historical odds results",
+        "fallback_term": "雷克维京 图恩 历史赔率 走势",
+        "layer": 2,
+        "category": "h2h_odds",
+        "priority": "medium",
+        "iron_rules": [
+          "#25 赔率异动捕捉"
+        ],
+        "target_fields": [
+          "last_3_odds_movement_direction",
+          "bookmaker_adjustment_pattern",
+          "upset_frequency"
+        ],
+        "notes": "对比历史同期赔率，发现异常偏移"
+      },
+      {
+        "task_id": "07_odds_live",
+        "search_term": "雷克维京 vs 图恩 odds today betting analysis",
+        "fallback_term": "雷克维京 图恩 赔率 分析 今日",
+        "layer": 3,
+        "category": "odds_live",
+        "priority": "critical",
+        "iron_rules": [
+          "#25 赔率异动",
+          "#27 亚盘降盘联动",
+          "#13 DOIT三角"
+        ],
+        "target_fields": [
+          "home_win_odds (decimal)",
+          "draw_odds",
+          "away_win_odds",
+          "asian_handicap (opening/current)",
+          "total_goals_line"
+        ],
+        "notes": "至少对比3家bookmaker，单家异常≠市场信号"
+      },
+      {
+        "task_id": "08_asian_handicap",
+        "search_term": "雷克维京 vs 图恩 asian handicap movement today",
+        "fallback_term": "雷克维京 图恩 亚盘 变动 盘口",
+        "layer": 3,
+        "category": "asian_handicap",
+        "priority": "critical",
+        "iron_rules": [
+          "#27 亚盘降盘-信心联动"
+        ],
+        "target_fields": [
+          "opening_handicap",
+          "current_handicap",
+          "change_magnitude (balls)",
+          "bookmakers_with_change (count/total)",
+          "change_direction (up/down)"
+        ],
+        "notes": "≥0.25球变动且≥4/5家bookmaker同步 = 强信号（规则#27）"
+      },
+      {
+        "task_id": "09_pfi",
+        "search_term": "雷克维京 fixture congestion fatigue August 2026",
+        "fallback_term": "雷克维京 赛程 密集 疲劳 ",
+        "layer": 4,
+        "category": "pfi",
+        "priority": "high",
+        "iron_rules": [
+          "#17 PFI四项检测",
+          "#28 PFI比分区间收缩"
+        ],
+        "target_fields": [
+          "matches_in_last_7_days",
+          "matches_in_last_14_days",
+          "last_match_competition (league/ucl/uel/cup)",
+          "rest_days_since_last_match",
+          "any_midweek_fixture"
+        ],
+        "notes": "重点查7天内是否有杯赛/欧战夹击"
+      },
+      {
+        "task_id": "10_pfi",
+        "search_term": "图恩 fixture congestion fatigue August 2026",
+        "fallback_term": "图恩 赛程 密集 疲劳 ",
+        "layer": 4,
+        "category": "pfi",
+        "priority": "high",
+        "iron_rules": [
+          "#17",
+          "#28"
+        ],
+        "target_fields": [
+          "matches_in_last_7_days",
+          "last_match_competition",
+          "rest_days",
+          "travel_distance_km (if away last match)"
+        ],
+        "notes": ""
+      },
+      {
+        "task_id": "11_weather",
+        "search_term": " weather forecast 2026-08-13 match day",
+        "fallback_term": " 天气预报 ",
+        "layer": 5,
+        "category": "weather",
+        "priority": "medium",
+        "iron_rules": [
+          "#20 天气阈值"
+        ],
+        "target_fields": [
+          "temperature_celsius",
+          "precipitation_probability_pct",
+          "wind_speed_kmh",
+          "humidity_pct",
+          "weather_warning (storm/snow/extreme_heat)"
+        ],
+        "notes": "风速>40km/h或降水>70%才触发规则#20"
+      },
+      {
+        "task_id": "12_news",
+        "search_term": "雷克维京 vs 图恩 team news motivation 2026-08-13",
+        "fallback_term": "雷克维京 图恩 动态 新闻 ",
+        "layer": 6,
+        "category": "news",
+        "priority": "high",
+        "iron_rules": [
+          "#21 战意等级",
+          "#22 冷门诱因"
+        ],
+        "target_fields": [
+          "manager_press_conference_quotes",
+          "player_interviews (key players only)",
+          "transfer_rumors_impact",
+          "table_stakes (relegation/europe race)",
+          "morale_indicators"
+        ],
+        "notes": "教练赛前发布会内容=高价值信号"
+      },
+      {
+        "task_id": "13_lineup_leak",
+        "search_term": "雷克维京 lineup leak confirmed 2026-08-13",
+        "fallback_term": "雷克维京 首发曝光 确认 ",
+        "layer": 6,
+        "category": "lineup_leak",
+        "priority": "critical",
+        "iron_rules": [
+          "#29 首发曝光-轮换识别"
+        ],
+        "target_fields": [
+          "confirmed_starting_11",
+          "source_reliability (official/fan_leak/journalist)",
+          "time_before_kickoff (hours)"
+        ],
+        "notes": "赛前3小时内的曝光消息可信度最高"
+      },
+      {
+        "task_id": "14_lineup_leak",
+        "search_term": "图恩 lineup leak confirmed 2026-08-13",
+        "fallback_term": "图恩 首发曝光 确认 ",
+        "layer": 6,
+        "category": "lineup_leak",
+        "priority": "critical",
+        "iron_rules": [
+          "#29"
+        ],
+        "target_fields": [
+          "confirmed_starting_11",
+          "source_reliability",
+          "time_before_kickoff"
+        ],
+        "notes": ""
+      }
+    ],
+    "data_sources": [],
+    "exported_at": "2026-08-13T16:37:26.729395",
+    "pipeline_version": "v2.0-hybrid"
+  },
+  {
+    "match": {
+      "home": "克拉约瓦",
+      "away": "库奥皮奥",
+      "league": "欧罗巴",
+      "kickoff": "2026-08-13T16:37:26.729883",
+      "city": ""
+    },
+    "odds": {
+      "home_win": 0,
+      "draw": 0,
+      "away_win": 0,
+      "asian_opening": "",
+      "asian_current": "",
+      "asian_change": 0,
+      "asian_change_detected": false,
+      "sources": []
+    },
+    "data_quality_tier": "🟡 A",
+    "search_tasks": [
+      {
+        "task_id": "01_injuries",
+        "search_term": "克拉约瓦 injuries news today 2026-08-13",
+        "fallback_term": "克拉约瓦 伤停名单 ",
+        "layer": 1,
+        "category": "injuries",
+        "priority": "critical",
+        "iron_rules": [
+          "#5 伤停精确到人",
+          "#19 核心缺阵降星"
+        ],
+        "target_fields": [
+          "missing_player_name",
+          "position (GK/DF/MF/FW)",
+          "reason (injury/suspended/red_card/tired)",
+          "expected_return"
+        ],
+        "notes": "必须区分「确认缺阵」vs「出战存疑」"
+      },
+      {
+        "task_id": "02_injuries",
+        "search_term": "库奥皮奥 injuries news today 2026-08-13",
+        "fallback_term": "库奥皮奥 伤停名单 ",
+        "layer": 1,
+        "category": "injuries",
+        "priority": "critical",
+        "iron_rules": [
+          "#5",
+          "#19"
+        ],
+        "target_fields": [
+          "missing_player_name",
+          "position",
+          "reason",
+          "expected_return"
+        ],
+        "notes": ""
+      },
+      {
+        "task_id": "03_lineup",
+        "search_term": "克拉约瓦 predicted lineup vs 库奥皮奥 2026-08-13",
+        "fallback_term": "克拉约瓦 首发 预测 ",
+        "layer": 1,
+        "category": "lineup",
+        "priority": "high",
+        "iron_rules": [
+          "#29 首发曝光-轮换识别"
+        ],
+        "target_fields": [
+          "starting_11_names",
+          "formation (4-3-3/4-2-3-1/etc)",
+          "changes_from_last_match"
+        ],
+        "notes": "T-3h内的首发消息=黄金情报（规则#29）"
+      },
+      {
+        "task_id": "04_lineup",
+        "search_term": "库奥皮奥 predicted lineup vs 克拉约瓦 2026-08-13",
+        "fallback_term": "库奥皮奥 首发 预测 ",
+        "layer": 1,
+        "category": "lineup",
+        "priority": "high",
+        "iron_rules": [
+          "#29"
+        ],
+        "target_fields": [
+          "starting_11_names",
+          "formation",
+          "changes_from_last_match"
+        ],
+        "notes": ""
+      },
+      {
+        "task_id": "05_h2h",
+        "search_term": "克拉约瓦 vs 库奥皮奥 head to head statistics",
+        "fallback_term": "克拉约瓦 库奥皮奥 交锋记录 历史战绩",
+        "layer": 2,
+        "category": "h2h",
+        "priority": "critical",
+        "iron_rules": [
+          "#26 H2H逆向思维",
+          "#14 H2H一边倒"
+        ],
+        "target_fields": [
+          "last_10_matches_results (WWDDL format)",
+          "home_win_rate_pct",
+          "avg_goals_per_match",
+          "dominant_trend (home/away/balanced)"
+        ],
+        "notes": "重点看最近5场趋势，不只看总战绩"
+      },
+      {
+        "task_id": "06_h2h_odds",
+        "search_term": "克拉约瓦 vs 库奥皮奥 historical odds results",
+        "fallback_term": "克拉约瓦 库奥皮奥 历史赔率 走势",
+        "layer": 2,
+        "category": "h2h_odds",
+        "priority": "medium",
+        "iron_rules": [
+          "#25 赔率异动捕捉"
+        ],
+        "target_fields": [
+          "last_3_odds_movement_direction",
+          "bookmaker_adjustment_pattern",
+          "upset_frequency"
+        ],
+        "notes": "对比历史同期赔率，发现异常偏移"
+      },
+      {
+        "task_id": "07_odds_live",
+        "search_term": "克拉约瓦 vs 库奥皮奥 odds today betting analysis",
+        "fallback_term": "克拉约瓦 库奥皮奥 赔率 分析 今日",
+        "layer": 3,
+        "category": "odds_live",
+        "priority": "critical",
+        "iron_rules": [
+          "#25 赔率异动",
+          "#27 亚盘降盘联动",
+          "#13 DOIT三角"
+        ],
+        "target_fields": [
+          "home_win_odds (decimal)",
+          "draw_odds",
+          "away_win_odds",
+          "asian_handicap (opening/current)",
+          "total_goals_line"
+        ],
+        "notes": "至少对比3家bookmaker，单家异常≠市场信号"
+      },
+      {
+        "task_id": "08_asian_handicap",
+        "search_term": "克拉约瓦 vs 库奥皮奥 asian handicap movement today",
+        "fallback_term": "克拉约瓦 库奥皮奥 亚盘 变动 盘口",
+        "layer": 3,
+        "category": "asian_handicap",
+        "priority": "critical",
+        "iron_rules": [
+          "#27 亚盘降盘-信心联动"
+        ],
+        "target_fields": [
+          "opening_handicap",
+          "current_handicap",
+          "change_magnitude (balls)",
+          "bookmakers_with_change (count/total)",
+          "change_direction (up/down)"
+        ],
+        "notes": "≥0.25球变动且≥4/5家bookmaker同步 = 强信号（规则#27）"
+      },
+      {
+        "task_id": "09_pfi",
+        "search_term": "克拉约瓦 fixture congestion fatigue August 2026",
+        "fallback_term": "克拉约瓦 赛程 密集 疲劳 ",
+        "layer": 4,
+        "category": "pfi",
+        "priority": "high",
+        "iron_rules": [
+          "#17 PFI四项检测",
+          "#28 PFI比分区间收缩"
+        ],
+        "target_fields": [
+          "matches_in_last_7_days",
+          "matches_in_last_14_days",
+          "last_match_competition (league/ucl/uel/cup)",
+          "rest_days_since_last_match",
+          "any_midweek_fixture"
+        ],
+        "notes": "重点查7天内是否有杯赛/欧战夹击"
+      },
+      {
+        "task_id": "10_pfi",
+        "search_term": "库奥皮奥 fixture congestion fatigue August 2026",
+        "fallback_term": "库奥皮奥 赛程 密集 疲劳 ",
+        "layer": 4,
+        "category": "pfi",
+        "priority": "high",
+        "iron_rules": [
+          "#17",
+          "#28"
+        ],
+        "target_fields": [
+          "matches_in_last_7_days",
+          "last_match_competition",
+          "rest_days",
+          "travel_distance_km (if away last match)"
+        ],
+        "notes": ""
+      },
+      {
+        "task_id": "11_weather",
+        "search_term": " weather forecast 2026-08-13 match day",
+        "fallback_term": " 天气预报 ",
+        "layer": 5,
+        "category": "weather",
+        "priority": "medium",
+        "iron_rules": [
+          "#20 天气阈值"
+        ],
+        "target_fields": [
+          "temperature_celsius",
+          "precipitation_probability_pct",
+          "wind_speed_kmh",
+          "humidity_pct",
+          "weather_warning (storm/snow/extreme_heat)"
+        ],
+        "notes": "风速>40km/h或降水>70%才触发规则#20"
+      },
+      {
+        "task_id": "12_news",
+        "search_term": "克拉约瓦 vs 库奥皮奥 team news motivation 2026-08-13",
+        "fallback_term": "克拉约瓦 库奥皮奥 动态 新闻 ",
+        "layer": 6,
+        "category": "news",
+        "priority": "high",
+        "iron_rules": [
+          "#21 战意等级",
+          "#22 冷门诱因"
+        ],
+        "target_fields": [
+          "manager_press_conference_quotes",
+          "player_interviews (key players only)",
+          "transfer_rumors_impact",
+          "table_stakes (relegation/europe race)",
+          "morale_indicators"
+        ],
+        "notes": "教练赛前发布会内容=高价值信号"
+      },
+      {
+        "task_id": "13_lineup_leak",
+        "search_term": "克拉约瓦 lineup leak confirmed 2026-08-13",
+        "fallback_term": "克拉约瓦 首发曝光 确认 ",
+        "layer": 6,
+        "category": "lineup_leak",
+        "priority": "critical",
+        "iron_rules": [
+          "#29 首发曝光-轮换识别"
+        ],
+        "target_fields": [
+          "confirmed_starting_11",
+          "source_reliability (official/fan_leak/journalist)",
+          "time_before_kickoff (hours)"
+        ],
+        "notes": "赛前3小时内的曝光消息可信度最高"
+      },
+      {
+        "task_id": "14_lineup_leak",
+        "search_term": "库奥皮奥 lineup leak confirmed 2026-08-13",
+        "fallback_term": "库奥皮奥 首发曝光 确认 ",
+        "layer": 6,
+        "category": "lineup_leak",
+        "priority": "critical",
+        "iron_rules": [
+          "#29"
+        ],
+        "target_fields": [
+          "confirmed_starting_11",
+          "source_reliability",
+          "time_before_kickoff"
+        ],
+        "notes": ""
+      }
+    ],
+    "data_sources": [],
+    "exported_at": "2026-08-13T16:37:26.729887",
+    "pipeline_version": "v2.0-hybrid"
+  }
+]

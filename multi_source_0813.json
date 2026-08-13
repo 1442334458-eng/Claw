@@ -1,0 +1,18 @@
+{
+  "date": "2026-08-13",
+  "matches_count": 0,
+  "report": {
+    "matches": [],
+    "summary": {
+      "total": 0,
+      "high_consensus": 0,
+      "medium_consensus": 0,
+      "low_consensus": 0,
+      "divergent": 0,
+      "multi_source": 0,
+      "single_source": 0,
+      "anomaly_count": 0
+    },
+    "anomalies": []
+  }
+}
