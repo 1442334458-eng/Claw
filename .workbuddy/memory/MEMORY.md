@@ -16,6 +16,16 @@
 - 同步脚本：`D:\1\Claw\.workbuddy\skills\sync_git.bat`，桌面入口 `C:\Users\xieyu\Desktop\GitHub同步.bat`。
 - Surface 收敛基准：GitHub `main` HEAD 为 `a68662d`（betting）、`60aed2d`（match）、`e7b5ee8`（pipeline）。
 
+## 代码同步主通道 = GitHub（2026-08-14 用户明确）
+
+- **核心原则**：两台电脑（老大=xieyu / 老二=Surface）的**代码（skills 目录、reports）统一通过 GitHub 互相 git pull/push 同步**。
+- **Syncthing 不负责代码同步**——它只同步配置类文件（如 mcp.json、models.json 等 wb-config 范围）。之前误以为 fba-qc 靠 Syncthing 同步，实际应走 git（老二说的 Syncthing 嵌套冲突只影响配置同步，不影响代码）。
+- **fba-qc（质检猿）同步安排**：
+  - 定稿后（v0.1.0，2026-08-14）需建独立 git 仓库纳入同步（同路线A：SSH 到 `git@github.com:1442334458-eng/<repo>.git`）。
+  - 当前状态（2026-08-14）：本机已保存到 `D:/1/Claw/.workbuddy/skills/fba-qc/SKILL.md`，但**尚未建仓库/未 push**。
+  - 让老二拿到 fba-qc = 本机建仓 push（或老二把他那份 push）→ 对方 `git pull`。
+  - 注意事项：`.stignore` 已排除 football-betting-analysis/match/pipeline 三个仓库，fba-qc 若建仓库也需同等处理（避免 Syncthing 与 git 双重同步冲突）。
+
 ## 分析报告双机同步（2026-08-13 修正，曾误判）
 
 - **关键事实**：老二(Surface) 的 `D:\1\Claw` 跟踪的是 **`football-betting-analysis.git`(main)**，不是 `Claw.git`。本机 `D:\1\Claw` 才是 `Claw.git`(master)。两台机 Claw 目录对应**不同远程仓库**。
@@ -92,3 +102,46 @@
 - 在全量分析报告（27场完整版）之后立即生成
 - 用 `present_files` 展示给用户
 - 同时 push 到 GitHub 仓库
+
+## 跨机通信通道（2026-08-14 确立）
+
+- **废弃**：信箱API (`workbuddy.cn/api/v1/messages`) — 2026-08-13/14连续15次失败（NETWORK_ERROR→404），接口可能已下线
+- **正式启用**：**Agent Mail (智能体邮箱)** MCP连接器
+  - 邮箱：`radq6690@agent.qq.com`
+  - 配额：50封/天，10次/分钟
+  - 权限：发送/接收/删除
+  - 附件：最大20MB，最多50个
+  - 确认机制：发送前需用户确认（confirmation_token）
+- **使用场景**：老大↔老二跨机通信（征求意见、通知、质检反馈等）
+- **注意**：老二也用同一个邮箱 `radq6690@agent.qq.com` 收发（同一账号不同实例）
+
+## 双机协作工作流完整约定（2026-08-14 汇总补充）
+
+### 机器与角色
+- **老大（xieyu）**：本机 `D:\1\Claw\`，负责主引擎(足球四猿)分析生成 + 跨机通信发起
+- **老二（Surface）**：独立 WorkBuddy 实例，负责 fba-qc 质检侧翼 + 报告核验 + 双向同步
+- 代码（skills/reports）通过 **GitHub SSH** 互相 pull/push，不依赖 Syncthing 传代码
+
+### sync_git.bat 同步范围（⚠️ 缺口待补）
+- 当前循环仅含 3 仓库：`football-betting-analysis` / `football-match-analysis__skillhub` / `football-pipeline-v8`（第30行 `for %%D in (...)`）
+- **fba-qc（质检猿）未纳入** → 建 git 仓库后必须同步改 sync_git.bat 第30行加入 `fba-qc`，否则不会自动同步
+- 流程：git add -A → commit → pull origin main → push origin main（双向合并）
+
+### .stignore 排除（⚠️ 缺口待补）
+- 当前仅排除3仓库（football-betting-analysis/match/pipeline，第16-18行）
+- fba-qc 建 git 仓库后必须同步加入 .stignore，避免与 Syncthing 双重同步冲突
+
+### check_mailbox.ps1 澄清（非废弃，已非主通道）
+- 该脚本检查 GitHub 仓库 `1442334458-eng/football-betting-analysis` 的 **Issue #1 评论** 作旧"信箱"，依赖 `.git_token`
+- 与已废弃的 workbuddy.cn 信箱API **无关**（它走 GitHub API，可能仍可用）
+- 现已被 Agent Mail 取代为跨机通信主通道，脚本保留无害（失败静默跳过）
+- 下次维护 sync_git.bat 时可评估是否移除第21行这段调用
+
+### 双机同步操作速查
+| 动作 | 执行方 | 命令/路径 |
+|------|--------|----------|
+| 同步3个足球技能 | 任一台 | `sync_git.bat`（commit→pull→push） |
+| 报告给老二看 | 本机 | 临时克隆 fba.git → cp reports → push → 删 .fba_tmp |
+| 老二拉报告 | 老二 | `git pull`（fba.git main） |
+| 跨机沟通 | 任一台 | Agent Mail（`radq6690@agent.qq.com`） |
+| fba-qc 首同步 | 待定 | 建仓 push（本机）或老二 push → 对方 pull |

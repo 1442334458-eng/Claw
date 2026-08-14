@@ -27,7 +27,7 @@ echo.
 
 set FAIL=0
 
-for %%D in (football-betting-analysis football-match-analysis__skillhub football-pipeline-v8) do (
+for %%D in (football-betting-analysis football-match-analysis__skillhub football-pipeline-v8 fb-review-auditor fba-qc) do (
     echo.
     echo ==================== %%D ====================
     echo ========== %%D ========== >> "%LOG%"
@@ -70,7 +70,7 @@ for %%D in (football-betting-analysis football-match-analysis__skillhub football
 echo.
 echo ========== 同步报告 ==========
 if %FAIL%==0 (
-    echo 结果：3 个仓库全部同步成功
+    echo 结果：5 个仓库全部同步成功
 ) else (
     echo 结果：%FAIL% 个步骤失败
     echo 日志文件：%LOG%
